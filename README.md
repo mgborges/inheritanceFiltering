@@ -2,10 +2,26 @@
 
 This script permits variant filtration based on inheritance patterns.
 
-
-
-
 ## Usage
+
+`filterInheritance <VCF> <inheritance> <phenotype> <samples> <relation>`
+
+`<VCF>` - is a multisample VCF file
+
+`<inheritance>` - the type of filter to apply:
+
+* `autossomalDominant`;
+* `autossomalRecessive`;
+* `mito`;
+* `XlinkedDominantFatherAffected`;
+* `XlinkedDominantMotherAffected`;
+* `XlinkedRecessive`.
+
+`<phenotype>` - comma separated list of phenotypes (`affected` or `unaffected`)
+
+`<relation>` - comma separated list of realations between samples (`femaleChild`, `maleChild`, `father`, `mother`)"
+
+## Example
 ```
 # git clone https://github.com/mgborges/variantFiltering.git 
 cd variantFiltering/test/
