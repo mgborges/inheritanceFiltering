@@ -610,12 +610,11 @@ fi
 splitVCF $vcf
 
 vcfs=`ls /tmp/*vcf`
-#for v in $vcfs
-#do
-#getGenotypes $v > $v.phenotype
-#splitPhenotypes $v.phenotype
-#done
+for v in $vcfs
+do
+getGenotypes $v > $v.phenotype
+splitPhenotypes $v.phenotype
+done
 $inheritance $phenotype $sample $relation
 }
-
 #### end ###
