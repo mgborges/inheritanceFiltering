@@ -615,8 +615,8 @@ splitSamples=`echo $sample | sed 's/,/ /g'`
 
 for i in $splitSamples
 do
-vcf=`ls /tmp/*$i*.vcf`
-vcfs=`echo $vcfs $vcf`
+v=`ls /tmp/*$i*.vcf`
+vcfs=`echo $vcfs $v`
 done
 
 for v in $vcfs
@@ -624,6 +624,7 @@ do
 getGenotypes $v > $v.phenotype
 splitPhenotypes $v.phenotype
 done
-$inheritance $phenotype $sample $relation
+$inheritance $phenotype $sample $relation > /tmp/$vcf.pos.tmp
+getVCF $vcf /tmp/$vcf.pos.tmp
 }
 #### end ###
