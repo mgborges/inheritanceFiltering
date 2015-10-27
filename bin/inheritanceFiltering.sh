@@ -619,13 +619,3 @@ $inheritance $phenotype $sample $relation
 }
 
 #### end ###
-
-cd /home/murilo/Dropbox/Doutorado/VEP_Filtering/project01/vcf/
-vcf="test.vcf"
-inheritance="XlinkedRecessive"
-phenotype="affected,unaffected,unaffected"
-samples="0009709,0015715,0016708"
-relation="femaleChild,father,mother"
-
-#source /home/murilo/Dropbox/Doutorado/VEP_Filtering/bin/inheritanceFiltering.sh
-echo filterInheritance $vcf $inheritance $phenotype $samples $relation
