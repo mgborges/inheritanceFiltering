@@ -34,5 +34,6 @@ relation="femaleChild,father,mother"
 
 source ../bin/inheritanceFiltering.sh
 
+# takes ~10 minutes
 filterInheritance $vcf $inheritance $phenotype $samples $relation
 ```
