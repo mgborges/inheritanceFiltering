@@ -20,6 +20,7 @@ function getGenotypes {
         echo "Multi-sample file, please split it."
         return 1
     fi
+    header="#CHR-POS-REF-ALT"
     echo $header FORMAT $sampleNames GT
 
 # Split the genotype field
@@ -609,7 +610,15 @@ fi
 
 splitVCF $vcf
 
-vcfs=`ls /tmp/*vcf`
+vcfs=""
+splitSamples=`echo $sample | sed 's/,/ /g'`
+
+for i in $splitSamples
+do
+vcf=`ls /tmp/*$i*.vcf`
+vcfs=`echo $vcfs $vcf`
+done
+
 for v in $vcfs
 do
 getGenotypes $v > $v.phenotype
