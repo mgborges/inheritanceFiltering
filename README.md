@@ -34,6 +34,6 @@ relation="femaleChild,father,mother"
 
 source ../bin/inheritanceFiltering.sh
 
-# takes ~10 minutes
+# takes ~10 minutes and you should get 3 variants
 filterInheritance $vcf $inheritance $phenotype $samples $relation
 ```
