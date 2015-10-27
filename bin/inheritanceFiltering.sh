@@ -573,10 +573,10 @@ vcf=$1
 grep ^# $vcf
 while read -r line
 do
-     chr=`echo $line | awk -F _ '{print $1}'`
-     pos=`echo $line | awk -F _ '{print $2}'`
-     ref=`echo $line | awk -F _ '{print $3}'`
-     alt=`echo $line | awk -F _ '{print $4}'`
+     chr=`echo $line | awk -F - '{print $1}'`
+     pos=`echo $line | awk -F - '{print $2}'`
+     ref=`echo $line | awk -F - '{print $3}'`
+     alt=`echo $line | awk -F - '{print $4}'`
      grep -w ^$chr $vcf | grep -w $pos | grep -w $ref | grep -w $alt
 done < $2
 }
@@ -589,7 +589,7 @@ function filterInheritance
 vcf=`echo $@ | awk -F " " '{print $1}'`
 inheritance=`echo $@ | awk -F " " '{print $2}'`
 phenotype=`echo $@ | awk -F " " '{print $3}'`
-sample="`echo $@ | awk -F " " '{print $4}'`"
+SAMPLES="`echo $@ | awk -F " " '{print $4}'`"
 relation=`echo $@ | awk -F " " '{print $5}'`
 
 isThereHelp=`echo $@ | grep '\-help' -c`
@@ -611,7 +611,7 @@ fi
 splitVCF $vcf
 
 vcfs=""
-splitSamples=`echo $sample | sed 's/,/ /g'`
+splitSamples=`echo $SAMPLES | sed 's/,/ /g'`
 
 for i in $splitSamples
 do
@@ -624,7 +624,7 @@ do
 getGenotypes $v > $v.phenotype
 splitPhenotypes $v.phenotype
 done
-$inheritance $phenotype $sample $relation > /tmp/$vcf.pos.tmp
+$inheritance $phenotype $SAMPLES $relation > /tmp/$vcf.pos.tmp
 getVCF $vcf /tmp/$vcf.pos.tmp
 }
 #### end ###
