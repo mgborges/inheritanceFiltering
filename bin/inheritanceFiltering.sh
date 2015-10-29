@@ -589,7 +589,7 @@ function filterInheritance
 vcf=`echo $@ | awk -F " " '{print $1}'`
 inheritance=`echo $@ | awk -F " " '{print $2}'`
 phenotype=`echo $@ | awk -F " " '{print $3}'`
-individuals=`echo $@ | awk -F " " '{print $4}'`
+samples=`echo $@ | awk -F " " '{print $4}'`
 relation=`echo $@ | awk -F " " '{print $5}'`
 
 isThereHelp=`echo $@ | grep '\-help' -c`
@@ -611,8 +611,7 @@ fi
 splitVCF $vcf
 
 vcfs=""
-s=$individuals
-splitSamples=`echo $s | sed 's/,/ /g'`
+splitSamples=`echo $samples | sed 's/,/ /g'`
 
 for i in $splitSamples
 do
@@ -626,7 +625,7 @@ getGenotypes $v > $v.phenotype
 splitPhenotypes $v.phenotype
 done
 
-$inheritance $phenotype $individuals $relation > /tmp/$vcf.pos.tmp
+$inheritance $phenotype $samples $relation > /tmp/$vcf.pos.tmp
 getVCF $vcf /tmp/$vcf.pos.tmp
 }
 #### end ###
