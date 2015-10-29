@@ -1,12 +1,12 @@
-# Split a multi-sample VCF file into separated samples
+# Split a multi-sample VCF file into separated SAMPLES
 function splitVCF {
     file=$1
-    samples=`less $file | grep "^#CHROM" | cut -f10-`
-    samples=($samples)
-    numberofSamples=`bc <<< "${#samples[@]} - 1"`
-    for i in `seq 0 $numberofSamples`; do
+    SAMPLES=`less $file | grep "^#CHROM" | cut -f10-`
+    SAMPLES=($SAMPLES)
+    numberofSAMPLES=`bc <<< "${#SAMPLES[@]} - 1"`
+    for i in `seq 0 $numberofSAMPLES`; do
     j=`bc <<< "$i+10"`
-    cat $file | cut -f 1-9,$j > /tmp/${samples[$i]}.vcf
+    cat $file | cut -f 1-9,$j > /tmp/${SAMPLES[$i]}.vcf
     done
 }
 
@@ -14,8 +14,8 @@ function splitVCF {
 function getGenotypes {
     file=$1
     sampleNames=(`cat $file | grep "^#CHROM" | cut -f10-`)
-    numberofSamples=${#sampleNames[@]}
-    if [ "$numberofSamples" != 1 ]
+    numberofSAMPLES=${#sampleNames[@]}
+    if [ "$numberofSAMPLES" != 1 ]
     then
         echo "Multi-sample file, please split it."
         return 1
@@ -36,8 +36,8 @@ function getGenotypes {
 function getGenotypes_COMPLEX {
     file=$1
     sampleNames=(`cat $file | grep "^#CHROM" | cut -f10-`)
-    numberofSamples=${#sampleNames[@]}
-    if [ "$numberofSamples" != 1 ]
+    numberofSAMPLES=${#sampleNames[@]}
+    if [ "$numberofSAMPLES" != 1 ]
     then
         echo "Multi-sample file, please split it."
         return 1
@@ -181,18 +181,18 @@ phenotype=`echo $phenotype | sed 's/,/ /g'`
 phenotype=($phenotype)
 phenotypeComparations=`bc <<< "${#phenotype[@]} - 1"`
 
-samples=$2
-samples=`echo $samples | sed 's/,/ /g'`
-samples=($samples)
+SAMPLES=$2
+SAMPLES=`echo $SAMPLES | sed 's/,/ /g'`
+SAMPLES=($SAMPLES)
 
-sample1=${samples[0]}
+sample1=${SAMPLES[0]}
 
-file1=`ls /tmp/*${samples[0]}*.hetero`
+file1=`ls /tmp/*${SAMPLES[0]}*.hetero`
 anteriorPhenotype=${phenotype[0]}
 
 for i in `seq 1 $phenotypeComparations`
 do
-     file2=`ls /tmp/*${samples[$i]}*.hetero`
+     file2=`ls /tmp/*${SAMPLES[$i]}*.hetero`
      output=/tmp/$i.tmp
      if [ $anteriorPhenotype == "affected" ] && [ ${phenotype[$i]} == "affected" ]
      then
@@ -224,18 +224,18 @@ phenotype=`echo $phenotype | sed 's/,/ /g'`
 phenotype=($phenotype)
 phenotypeComparations=`bc <<< "${#phenotype[@]} - 1"`
 
-samples=$2
-samples=`echo $samples | sed 's/,/ /g'`
-samples=($samples)
+SAMPLES=$2
+SAMPLES=`echo $SAMPLES | sed 's/,/ /g'`
+SAMPLES=($SAMPLES)
 
-sample1=${samples[0]}
+sample1=${SAMPLES[0]}
 
-file1=`ls /tmp/*${samples[0]}*.homoAlter`
+file1=`ls /tmp/*${SAMPLES[0]}*.homoAlter`
 anteriorPhenotype=${phenotype[0]}
 
 for i in `seq 1 $phenotypeComparations`
 do
-     file2=`ls /tmp/*${samples[$i]}*.homoAlter`
+     file2=`ls /tmp/*${SAMPLES[$i]}*.homoAlter`
      output=/tmp/$i.tmp
      if [ $anteriorPhenotype == "affected" ] && [ ${phenotype[$i]} == "affected" ]
      then
@@ -267,18 +267,18 @@ phenotype=`echo $phenotype | sed 's/,/ /g'`
 phenotype=($phenotype)
 phenotypeComparations=`bc <<< "${#phenotype[@]} - 1"`
 
-samples=$2
-samples=`echo $samples | sed 's/,/ /g'`
-samples=($samples)
+SAMPLES=$2
+SAMPLES=`echo $SAMPLES | sed 's/,/ /g'`
+SAMPLES=($SAMPLES)
 
-sample1=${samples[0]}
+sample1=${SAMPLES[0]}
 
-file1=`ls /tmp/*${samples[0]}*.homoAlter`
+file1=`ls /tmp/*${SAMPLES[0]}*.homoAlter`
 anteriorPhenotype=${phenotype[0]}
 
 for i in `seq 1 $phenotypeComparations`
 do
-     file2=`ls /tmp/*${samples[$i]}*.homoAlter`
+     file2=`ls /tmp/*${SAMPLES[$i]}*.homoAlter`
      output=/tmp/$i.tmp
      if [ $anteriorPhenotype == "affected" ] && [ ${phenotype[$i]} == "affected" ]
      then
@@ -312,9 +312,9 @@ phenotype=`echo $phenotype | sed 's/,/ /g'`
 phenotype=($phenotype)
 phenotypeComparations=`bc <<< "${#phenotype[@]} - 1"`
 
-samples=$2
-samples=`echo $samples | sed 's/,/ /g'`
-samples=($samples)
+SAMPLES=$2
+SAMPLES=`echo $SAMPLES | sed 's/,/ /g'`
+SAMPLES=($SAMPLES)
 
 relation=$3
 relation=`echo $relation | sed 's/,/ /g'`
@@ -328,15 +328,15 @@ do
      r=${relation[$i]}
      if [ "$r" == "femaleChild" ] && [ ${phenotype[$i]} == "affected" ]
      then
-          file=`ls /tmp/*${samples[$i]}*.hetero`
+          file=`ls /tmp/*${SAMPLES[$i]}*.hetero`
           files=`echo $files $file`
      elif [ "$r" == "father" ] && [ ${phenotype[$i]} == "affected" ]
      then
-          file=`ls /tmp/*${samples[$i]}*.homoAlter`
+          file=`ls /tmp/*${SAMPLES[$i]}*.homoAlter`
           files=`echo $files $file`
      elif [ "$r" == "mother" ] && [ ${phenotype[$i]} == "unaffected" ]
      then
-          file=`ls /tmp/*${samples[$i]}*.homo`
+          file=`ls /tmp/*${SAMPLES[$i]}*.homo`
           files=`echo $files $file`
      else
           echo ERROR $r should not be ${phenotype[$i]}; return 1
@@ -386,9 +386,9 @@ phenotype=`echo $phenotype | sed 's/,/ /g'`
 phenotype=($phenotype)
 phenotypeComparations=`bc <<< "${#phenotype[@]} - 1"`
 
-samples=$2
-samples=`echo $samples | sed 's/,/ /g'`
-samples=($samples)
+SAMPLES=$2
+SAMPLES=`echo $SAMPLES | sed 's/,/ /g'`
+SAMPLES=($SAMPLES)
 
 relation=$3
 relation=`echo $relation | sed 's/,/ /g'`
@@ -406,15 +406,15 @@ then
           r=${relation[$i]}
           if [ "$r" == "femaleChild" ] && [ ${phenotype[$i]} == "affected" ]
           then
-               file=`ls /tmp/*${samples[$i]}*.hetero`
+               file=`ls /tmp/*${SAMPLES[$i]}*.hetero`
                files=`echo $files $file`
           elif [ "$r" == "father" ] && [ ${phenotype[$i]} == "unaffected" ]
           then
-               file=`ls /tmp/*${samples[$i]}*.homo`
+               file=`ls /tmp/*${SAMPLES[$i]}*.homo`
                     files=`echo $files $file`
           elif [ "$r" == "mother" ] && [ ${phenotype[$i]} == "affected" ]
           then
-               file=`ls /tmp/*${samples[$i]}*.hetero`
+               file=`ls /tmp/*${SAMPLES[$i]}*.hetero`
                files=`echo $files $file`
           else
                echo ERROR $r should not be ${phenotype[$i]}; return 1
@@ -428,15 +428,15 @@ then
           r=${relation[$i]}
           if [ "$r" == "maleChild" ] && [ ${phenotype[$i]} == "affected" ]
           then
-               file=`ls /tmp/*${samples[$i]}*.homoAlter`
+               file=`ls /tmp/*${SAMPLES[$i]}*.homoAlter`
                files=`echo $files $file`
           elif [ "$r" == "father" ] && [ ${phenotype[$i]} == "unaffected" ]
           then
-               file=`ls /tmp/*${samples[$i]}*.homo`
+               file=`ls /tmp/*${SAMPLES[$i]}*.homo`
                     files=`echo $files $file`
           elif [ "$r" == "mother" ] && [ ${phenotype[$i]} == "affected" ]
           then
-               file=`ls /tmp/*${samples[$i]}*.hetero`
+               file=`ls /tmp/*${SAMPLES[$i]}*.hetero`
                files=`echo $files $file`
           else
                echo ERROR $r should not be ${phenotype[$i]}; return 1
@@ -488,9 +488,9 @@ phenotype=`echo $phenotype | sed 's/,/ /g'`
 phenotype=($phenotype)
 phenotypeComparations=`bc <<< "${#phenotype[@]} - 1"`
 
-samples=$2
-samples=`echo $samples | sed 's/,/ /g'`
-samples=($samples)
+SAMPLES=$2
+SAMPLES=`echo $SAMPLES | sed 's/,/ /g'`
+SAMPLES=($SAMPLES)
 
 relation=$3
 relation=`echo $relation | sed 's/,/ /g'`
@@ -503,14 +503,14 @@ familialProfile=`IsTheFatherAffected $relation $phenotype`
 
 if [ "$familialProfile" == "0" ]
 then
-     sample1=${samples[0]}
+     sample1=${SAMPLES[0]}
 
-     file1=`ls /tmp/*${samples[0]}*.homoAlter`
+     file1=`ls /tmp/*${SAMPLES[0]}*.homoAlter`
      anteriorPhenotype=${phenotype[0]}
 
      for i in `seq 1 $phenotypeComparations`
      do
-          file2=`ls /tmp/*${samples[$i]}*.homoAlter`
+          file2=`ls /tmp/*${SAMPLES[$i]}*.homoAlter`
           output=/tmp/$i.tmp
           if [ $anteriorPhenotype == "affected" ] && [ ${phenotype[$i]} == "affected" ]
           then
@@ -538,14 +538,14 @@ then
           r=${relation[$i]}
           if [ "$r" == "femaleChild" ]
           then
-               file=`ls /tmp/*${samples[$i]}*.hetero`
+               file=`ls /tmp/*${SAMPLES[$i]}*.hetero`
                files=`echo $files $file`
           elif [ "$r" == "father" ] && [ ${phenotype[$i]} == "affected" ]
           then
-               file=`ls /tmp/*${samples[$i]}*.homoAlter`
+               file=`ls /tmp/*${SAMPLES[$i]}*.homoAlter`
                files=`echo $files $file`
           else
-               file=`ls /tmp/*${samples[$i]}*.homo`
+               file=`ls /tmp/*${SAMPLES[$i]}*.homo`
                files=`echo $files $file`
           fi
      let i=$i+1
@@ -611,9 +611,9 @@ fi
 splitVCF $vcf
 
 vcfs=""
-splitSamples=`echo $samples | sed 's/,/ /g'`
+splitSAMPLES=`echo $samples | sed 's/,/ /g'`
 
-for i in $splitSamples
+for i in $splitSAMPLES
 do
 v=`ls /tmp/*$i*.vcf`
 vcfs=`echo $vcfs $v`
